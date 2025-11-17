@@ -14,11 +14,12 @@ pipeline {
     }
 
     stages {
+
         stage('Build') {
             steps {
-                echo "Building using Maven..."
+                echo "Building Stage..."
+                echo "Maven is installed, but no pom.xml found in repo."
                 bat "mvn -version"
-                
             }
         }
 
@@ -27,8 +28,8 @@ pipeline {
                 expression { return params.executeTests == true }
             }
             steps {
-                echo "Running tests..."
-                bat "mvn test"
+                echo "Test Stage..."
+                echo "Skipping 'mvn test' because no pom.xml exists."
             }
         }
 
