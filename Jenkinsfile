@@ -1,39 +1,47 @@
-def flag = true
-
 pipeline {
     agent any
+
+    tools {
+        maven 'Maven'     // must match Jenkins Tools name
+    }
+
+    parameters {
+        booleanParam(
+            name: 'executeTests',
+            defaultValue: true,
+            description: 'Run Test Stage'
+        )
+    }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo "Building using Maven..."
+                bat "mvn -version"
+                bat "mvn clean install"
             }
         }
 
         stage('Test') {
             when {
-                expression {
-                    return flag == false
-                }
+                expression { return params.executeTests == true }
             }
             steps {
-                echo 'Testing..'
+                echo "Running tests..."
+                bat "mvn test"
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo "Deploy Stage..."
             }
         }
     }
 
     post {
         always {
-            echo 'post build condition running'
-        }
-        failure {
-            echo 'post action if build failed'
+            echo "Post-build actions..."
         }
     }
 }
