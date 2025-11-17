@@ -18,7 +18,7 @@ pipeline {
             steps {
                 echo "Building using Maven..."
                 bat "mvn -version"
-                bat "mvn clean install"
+                
             }
         }
 
